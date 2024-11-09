@@ -8,7 +8,7 @@ fi
 
 PORTA="$1"
 
-apt update -qq >/dev/null && sudo apt install -y -qq openssh-server >/dev/null
+apt install -y -qq openssh-server >/dev/null
 
 # Modifica o arquivo de configuração do sshd para usar a porta especificada
 sed -i "s/#Port 22/Port $PORTA/" /etc/ssh/sshd_config

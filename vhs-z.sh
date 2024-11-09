@@ -8,10 +8,11 @@ fi
 
 PORTA="$1"
 
-# Instala o servidor SSH silenciosamente
-apt update && apt install -y openssh-server
+# Atualiza o apt e instala o servidor SSH
+apt update
+apt install -y openssh-server
 
-# Mostra o conteúdo do sshd_config antes das alterações
+# Continua com o script
 echo "Conteúdo original de /etc/ssh/sshd_config:"
 cat /etc/ssh/sshd_config
 
@@ -30,6 +31,6 @@ echo "root:12345678" | chpasswd
 # Inicia o serviço SSH
 service ssh start
 
-# Exibe as mensagens de status com `tee` para garantir que sejam exibidas
+# Exibe as mensagens de status
 echo "Configuração concluída e serviço SSH iniciado na porta $PORTA." | tee /dev/stderr
 echo "Use ssh root@IP -p $PORTA com a senha 12345678 para acessar o SSH" | tee /dev/stderr

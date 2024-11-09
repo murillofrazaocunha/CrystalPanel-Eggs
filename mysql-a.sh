@@ -21,4 +21,3 @@ until mysqladmin ping --silent -P ${port}; do
 done
 
 mysqladmin -u root password "${jar}" -P "${port}"
-mysql -u root -p"${jar}" -P "${port}"

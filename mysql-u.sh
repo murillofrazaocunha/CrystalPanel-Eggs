@@ -38,7 +38,7 @@ if [ ! -f "$my_cnf_path" ]; then
   cat > "$my_cnf_path" <<EOF
 [mysqld]
 datadir=$data_dir
-socket=$data_dir/mysql.sock
+socket=/var/lib/mysql/mysql.sock
 user=mysql
 bind-address=0.0.0.0
 port=$port

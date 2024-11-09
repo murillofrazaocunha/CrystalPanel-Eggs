@@ -50,13 +50,12 @@ fi
 echo "Iniciando o MySQL na porta $port com o arquivo de configuração $my_cnf_path..."
 mysqld --defaults-file="$my_cnf_path" --datadir="$data_dir" --user=mysql --port="$port" &
 
+# Se a senha temporária foi gerada, altera a senha
+if [ -n "$temp_password" ]; then
 echo "Aguardando o MySQL ficar disponível..."
 until mysqladmin ping -P "$port"; do
   sleep 2
 done
-
-# Se a senha temporária foi gerada, altera a senha
-if [ -n "$temp_password" ]; then
   echo "A senha temporária é: $temp_password"
   echo "Alterando a senha do usuário root..."
   
@@ -70,3 +69,5 @@ if [ -n "$temp_password" ]; then
     exit 1
   fi
 fi
+
+sleep 5

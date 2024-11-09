@@ -73,6 +73,3 @@ else
   echo "Erro: Nenhuma senha temporária foi gerada."
   exit 1
 fi
-
-echo "Escreva a sua senha:"
-mysql -u root -p -P "$port"

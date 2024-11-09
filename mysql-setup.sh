@@ -60,18 +60,18 @@ done
   echo "Alterando a senha do usuário root..."
 
 # Concede privilégios ao usuário root para permitir conexões externas
-mysql --connect-expired-password -u root -p"$temp_password" -P "$port" -e \
-"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-
-# Define a senha para o usuário root novamente, usando ALTER USER
-mysql --connect-expired-password -u root -p"$temp_password" -P "$port" -e \
-"ALTER USER 'root'@'%' IDENTIFIED BY '$new_password';"
-
-# Também atualiza a senha para o usuário root local
+# Altera a senha temporária do usuário root para a nova senha
 mysql --connect-expired-password -u root -p"$temp_password" -P "$port" -e \
 "ALTER USER 'root'@'localhost' IDENTIFIED BY '$new_password';"
 
-  
+# Altera a senha também para conexões externas (root@'%')
+mysql --connect-expired-password -u root -p"$new_password" -P "$port" -e \
+"ALTER USER 'root'@'%' IDENTIFIED BY '$new_password';"
+
+# Concede privilégios ao usuário root para permitir conexões externas
+mysql -u root -p"$new_password" -P "$port" -e \
+"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+
   # Verifica se a nova senha funciona
   if mysqladmin -u root -p"$new_password" -P "$port" ping > /dev/null 2>&1; then
     echo "Senha do usuário root alterada com sucesso!"

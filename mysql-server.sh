@@ -59,9 +59,15 @@ done
   echo "A senha temporária é: $temp_password"
   echo "Alterando a senha do usuário root..."
 
+# Concede privilégios ao usuário root para permitir conexões externas
 mysql --connect-expired-password -u root -p"$temp_password" -P "$port" -e \
-"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$new_password' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
 
+# Define a senha para o usuário root novamente, usando ALTER USER
+mysql --connect-expired-password -u root -p"$temp_password" -P "$port" -e \
+"ALTER USER 'root'@'%' IDENTIFIED BY '$new_password';"
+
+# Também atualiza a senha para o usuário root local
 mysql --connect-expired-password -u root -p"$temp_password" -P "$port" -e \
 "ALTER USER 'root'@'localhost' IDENTIFIED BY '$new_password';"
 

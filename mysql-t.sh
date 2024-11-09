@@ -30,7 +30,8 @@ fi
 
 # Verifica se o diretório /app/config existe, se não, cria
 mkdir -p "/app/config"
-
+chown -R mysql:mysql /app/mysql
+chown -R mysql:mysql /app/config
 # Verifica se o arquivo my.cnf existe, se não, cria um arquivo de configuração padrão
 if [ ! -f "$my_cnf_path" ]; then
   echo "Arquivo my.cnf não encontrado. Criando arquivo de configuração padrão em $my_cnf_path..."
@@ -49,9 +50,8 @@ fi
 echo "Iniciando o MySQL na porta $port com o arquivo de configuração $my_cnf_path..."
 mysqld --defaults-file="$my_cnf_path" --datadir="$data_dir" --user=mysql --port="$port" &
 
-# Aguarda o MySQL estar pronto para conexões
 echo "Aguardando o MySQL ficar disponível..."
-until mysqladmin ping --silent -P "$port"; do
+until mysqladmin ping -P "$port"; do
   sleep 2
 done
 

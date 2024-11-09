@@ -12,22 +12,18 @@ new_password=$2
 
 # Verificando se o diretório de dados do MySQL existe, se não, inicializa
 if [ ! -d "/app/mysql" ]; then
+  mkdir /app/config
   # Inicializa o banco de dados e captura a saída
   echo "Inicializando o banco de dados MySQL..."
-  init_output=$(mysqld --initialize --datadir=/app 2>&1)
+  init_output=$(mysqld --initialize --datadir=/app --defaults-file=/app/config 2>&1)
   echo "$init_output"
   # Captura a senha temporária da saída
   temp_password=$(echo "$init_output" | grep -oP 'A temporary password is generated for root@localhost: \K.*')
-  
-  if [ -z "$temp_password" ]; then
-    echo "Erro: Não foi possível obter a senha temporária."
-    exit 1
-  fi
 fi
 
 # Inicia o MySQL
 echo "Iniciando o MySQL na porta $port..."
-mysqld --datadir=/app --user=mysql --port=$port &
+mysqld --datadir=/app --user=mysql --port=$port --defaults-file=/app/config &
 
 # Aguarda o MySQL estar pronto para conexões
 echo "Aguardando o MySQL ficar disponível..."

@@ -74,4 +74,5 @@ else
   exit 1
 fi
 
-mysql -u root -p"$new_password" -P "$port"
+echo "Escreva a sua senha:"
+mysql -u root -p -P "$port"

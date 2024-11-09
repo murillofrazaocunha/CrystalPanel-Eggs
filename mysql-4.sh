@@ -58,8 +58,13 @@ until mysqladmin ping -P "$port"; do
 done
   echo "A senha temporária é: $temp_password"
   echo "Alterando a senha do usuário root..."
-  
-  mysql -u root -p"$temp_password" -P "$port" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$new_password'" --connect-expired-password
+
+mysql --connect-expired-password -u root -p"$temp_password" -P "$port" -e \
+"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$new_password' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+
+mysql --connect-expired-password -u root -p"$temp_password" -P "$port" -e \
+"ALTER USER 'root'@'localhost' IDENTIFIED BY '$new_password';"
+
   
   # Verifica se a nova senha funciona
   if mysqladmin -u root -p"$new_password" -P "$port" ping > /dev/null 2>&1; then

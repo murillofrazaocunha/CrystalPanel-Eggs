@@ -24,7 +24,7 @@ until mysqladmin ping --silent -P ${port}; do
 done
 
 # Captura a senha temporária do log de inicialização
-temp_password=$(grep 'temporary password' /app/mysql/*.err | awk '{print $NF}')
+temp_password=$(grep 'A temporary password is generated for root@localhost:' /app/mysql/*.err | sed 's/.*: //')
 
 # Faz login no MySQL com a senha temporária
 mysql -u root -p"${temp_password}" -P "${port}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${jar}'"

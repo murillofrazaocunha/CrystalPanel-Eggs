@@ -69,7 +69,4 @@ if [ -n "$temp_password" ]; then
     echo "Erro ao confirmar a alteração de senha. Verifique as configurações."
     exit 1
   fi
-else
-  echo "Erro: Nenhuma senha temporária foi gerada."
-  exit 1
 fi

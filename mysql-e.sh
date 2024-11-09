@@ -19,9 +19,9 @@ if [ ! -d "/app/mysql" ]; then
   temp_password=$(echo "$init_output" | grep -oP 'A temporary password is generated for root@localhost: \K.*')
 fi
 
-  mysqld --datadir=/app --user=mysql --port=${port} &
+  mysqld --datadir=/app --user=mysql --port=$port &
 
-  until mysqladmin ping --silent -P ${port}; do
+  until mysqladmin ping --silent -P $port; do
     sleep 2
   done
 

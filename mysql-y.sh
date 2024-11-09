@@ -74,4 +74,4 @@ else
   exit 1
 fi
 
-mysql -u root -p"$new_password" -P "$port"
+mysql -u root -p -P "$port"

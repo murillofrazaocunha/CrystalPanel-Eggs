@@ -14,7 +14,7 @@ if [ ! -d "/app/mysql" ]; then
   mysqld --initialize --datadir=/app
 fi
 
-mysqld --datadir=/app --user=mysql --port=${port} &
+mysqld --datadir=/app --user=mysql --port=${port} 
 
 until mysqladmin ping --silent -P ${port}; do
   sleep 2

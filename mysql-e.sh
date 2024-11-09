@@ -16,20 +16,22 @@ if [ ! -d "/app/mysql" ]; then
   init_output=$(mysqld --initialize --datadir=/app 2>&1)
   # Captura a senha temporária da saída
   temp_password=$(echo "$init_output" | grep -oP 'A temporary password is generated for root@localhost: \K.*')
-
-mysql -u root -p"${temp_password}" -P "${port}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${jar}'"
-
-# Confirma a alteração da senha
-mysqladmin -u root -p"${jar}" -P "${port}" ping
 fi
 
-# Inicia o MySQL
-mysqld --datadir=/app --user=mysql --port=${port} &
+  mysqld --datadir=/app --user=mysql --port=${port} &
 
-# Aguarda o MySQL iniciar
-until mysqladmin ping --silent -P ${port}; do
-  sleep 2
-done
+  until mysqladmin ping --silent -P ${port}; do
+    sleep 2
+  done
 
-echo "Senha do usuário root alterada com sucesso!"
-echo "Servidor iniciado com sucesso!"
+# Verifica se a senha temporária foi encontrada
+if [ -n "$temp_password" ]; then
+
+  # Faz login no MySQL com a senha temporária
+  mysql -u root -p"${temp_password}" -P "${port}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${jar}'"
+
+  # Confirma a alteração da senha
+  mysqladmin -u root -p"${jar}" -P "${port}" ping
+
+  echo "Senha do usuário root alterada com sucesso!"
+fi

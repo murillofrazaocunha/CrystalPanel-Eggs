@@ -8,7 +8,8 @@ fi
 
 PORTA="$1"
 
-apt install -y -qq openssh-server >/dev/null
+# Instala o servidor SSH, garantindo que as mensagens sejam exibidas
+apt install -y -qq openssh-server
 
 # Modifica o arquivo de configuração do sshd para usar a porta especificada
 sed -i "s/#Port 22/Port $PORTA/" /etc/ssh/sshd_config
@@ -18,9 +19,11 @@ sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd
 sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
 # Define a senha para o usuário root
-echo "root:12345678" | sudo chpasswd
+echo "root:12345678" | chpasswd
 
-service ssh start
+# Reinicia o serviço SSH para aplicar as mudanças
+service ssh restart
 
+# Exibe mensagens de status
 echo "Configuração concluída e serviço SSH iniciado na porta $PORTA."
-echo "Use ssh root@IP -p $PORTA com a senha 12345678 para acessar o SSH" 
+echo "Use ssh root@IP -p $PORTA com a senha 12345678 para acessar o SSH"

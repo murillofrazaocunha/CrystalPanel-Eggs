@@ -29,7 +29,7 @@ fi
 if [ -n "$temp_password" ]; then
   echo "$temp_password"
   # Faz login no MySQL com a senha temporária
-  mysql -u root -p"${temp_password}" -P "${port}" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$jar'"
+  mysql -u root -p"$temp_password" -P "$port" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$jar'"
 
   # Confirma a alteração da senha
   mysqladmin -u root -p"$jar" -P "$port" ping

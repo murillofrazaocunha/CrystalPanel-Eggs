@@ -62,7 +62,7 @@ done
 
   mysql -u root -p"$temp_password" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$new_password';" --connect-expired-password
   mysql -u root -p"$new_password" -e "UPDATE mysql.user SET Host='%' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;"
-  mysql -u root -p -e "ALTER USER 'root'@'%' IDENTIFIED BY '$new_password';"
+  mysql -u root -p"$new_password" -e "ALTER USER 'root'@'%' IDENTIFIED BY '$new_password';"
 
   # Verifica se a nova senha funciona
   if mysqladmin -u root -p"$new_password" -P "$port" ping > /dev/null 2>&1; then

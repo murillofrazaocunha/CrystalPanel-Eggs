@@ -60,10 +60,10 @@ if [ -n "$temp_password" ]; then
   echo "A senha temporária é: $temp_password"
   echo "Alterando a senha do usuário root..."
   
-  mysql -u root -p"$temp_password" -P "$port" --defaults-file="$my_cnf_path" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$new_password'"
+  mysql -u root -p"$temp_password" -P "$port" -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$new_password'"
   
   # Verifica se a nova senha funciona
-  if mysqladmin -u root -p"$new_password" -P "$port" --defaults-file="$my_cnf_path" ping > /dev/null 2>&1; then
+  if mysqladmin -u root -p"$new_password" -P "$port" ping > /dev/null 2>&1; then
     echo "Senha do usuário root alterada com sucesso!"
   else
     echo "Erro ao confirmar a alteração de senha. Verifique as configurações."

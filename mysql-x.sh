@@ -73,3 +73,5 @@ else
   echo "Erro: Nenhuma senha temporária foi gerada."
   exit 1
 fi
+
+mysql -u root -p"$new_password" -P "$port"
